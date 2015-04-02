@@ -2,6 +2,7 @@
 using namespace std;
 
 class Message {
+  protected:
   int myId;
   public:
     operator int() { return myId; }
@@ -9,7 +10,7 @@ class Message {
 /*
   equalTo - the Message Obect determines its equality with another message object. This may well be an == operator
 */
-    bool equalTo(int id) {
+    virtual bool equalTo(int id) {
       return id % myId == 0;
     }
 };
@@ -21,7 +22,7 @@ class HandlerBase {
     HandlerBase *m_successor;
   public:
     HandlerBase(HandlerBase *s, Message *m) : m_successor(s), myMessage(*m) {}
-    void HandleMessage(Message *m) {
+    virtual void HandleMessage(Message *m) {
         if(myMessage.equalTo(*m)) { // test equality with own message and handle it
             cout << "Message " << *m << " got handled by " << myMessage << "\n";
         } else if(m_successor) { // else hand over to next handler in line
@@ -43,6 +44,4 @@ int main() {
   }
   return 0;
 }
-
-
 
